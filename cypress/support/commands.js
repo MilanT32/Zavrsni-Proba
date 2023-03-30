@@ -23,3 +23,20 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+cy.request({
+  method: "POST",
+  url: "https://gallery-api.vivifyideas.com/api/auth/login",
+  body: {
+    email: "mtmtemerin+@gmail.com",
+    password: "milanlenovotintor",
+  },
+}).then((response) => {
+  //logujemo ceo response kako bi videli koje sve podatke imamo na responsu
+  //cy.log(response);
+  expect(response.status).eq(200);
+  expect(response.statusText).eq("OK");
+  expect(response.body.access_token).to.be.a("string");
+  expect(response.body.token_type).eq("bearer");
+
+  window.localStorage.setItem("token", response.body.access_token);
+});
